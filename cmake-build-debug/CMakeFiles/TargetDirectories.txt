@@ -1,0 +1,6 @@
+/Users/os/Desktop/TW/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/os/Desktop/TW/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/os/Desktop/TW/cmake-build-debug/CMakeFiles/TW.dir
+/Users/os/Desktop/TW/cmake-build-debug/tests/CMakeFiles/rebuild_cache.dir
+/Users/os/Desktop/TW/cmake-build-debug/tests/CMakeFiles/edit_cache.dir
+/Users/os/Desktop/TW/cmake-build-debug/tests/CMakeFiles/HelloTest.dir
