@@ -1,17 +1,22 @@
 #include <iostream>
-#include "lib/Board.h"
+#include "lib/Game.h"
 
 using namespace std;
 
 int main() {
     int h, w;
     cin>>h>>w;
-    Board board = Board(h, w);
-    auto b = board.getBoard();
-    for (int i = 0; i < h; i++){
-        for (int j = 0; j < w; j++)
-            cout<<b[i][j]<<" ";
-        cout<<endl;
-    }
 
+    vector<pair<int, int>> test1;
+    test1.push_back(pair<int,int>(0,0));
+    test1.push_back(pair<int,int>(0,3));
+    test1.push_back(pair<int,int>(1,2));
+    test1.push_back(pair<int,int>(2,2));
+    test1.push_back(pair<int,int>(3,0));
+
+    auto board = Board(h, w, test1);
+    auto display = Display();
+    auto game = Game(board,display,1000);
+    game.play();
+    return 0;
 }

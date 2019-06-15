@@ -9,7 +9,7 @@ include(conanbuildinfo.cmake)
 conan_basic_setup()
 
 
-add_executable(TW main.cpp lib/Board.cpp lib/Board.h)
+add_executable(TW main.cpp lib/Board.cpp lib/Board.h lib/Display.cpp lib/Display.h lib/Game.cpp lib/Game.h)
 target_link_libraries(TW ${CONAN_LIBS})
 
 

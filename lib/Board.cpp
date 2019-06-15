@@ -9,7 +9,7 @@ Board::Board(int h, int w, vector<pair<int, int>> &live_cell) {
     }
 }
 
-vector<vector<bool>> Board::getBoard() {
+vector<vector<bool>> &Board::getBoard() {
     return cells;
 }
 
