@@ -9,7 +9,7 @@ include(conanbuildinfo.cmake)
 conan_basic_setup()
 
 
-add_executable(TW main.cpp lib/Math.cpp lib/Math.h lib/Circle.cpp lib/Circle.h)
+add_executable(TW main.cpp lib/Board.cpp lib/Board.h)
 target_link_libraries(TW ${CONAN_LIBS})
 
 

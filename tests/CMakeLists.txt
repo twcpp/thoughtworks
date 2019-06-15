@@ -11,6 +11,6 @@ conan_basic_setup()
 add_executable(HelloTest
         setup.cpp
         test_board.cpp
-        ../lib/Circle.cpp
-        ../lib/Circle.h)
+        ../lib/Board.cpp
+        ../lib/Board.h)
 target_link_libraries(HelloTest ${CONAN_LIBS})
