@@ -15,24 +15,35 @@ vector<vector<bool>> Board::getBoard() {
 
 int dx[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
 int dy[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
-int Board::countnNeighbor(int x, int y){
+int Board::countnNeighbor(vector<vector<bool>> &tmp, int x, int y){
     int cnt = 0;
     for (int i = 0; i < 8; i++)
     {
         int tx = x + dx[i];
         int ty = y + dy[i];
-        if (tx < 0 || tx >= this->h || ty < 0 || ty >= this->w)
+        if (tx < 0 || tx >= h || ty < 0 || ty >= w)
             continue;
-        if (this->cells[tx][ty])
+        if (tmp[tx][ty])
             cnt++;
     }
     return cnt;
 }
 
 void Board::processBoard() {
+    auto tmp = cells;
     for(int i = 0; i < h; i++){
         for(int j = 0; j < w; j++){
-
+            int cnt = countnNeighbor(tmp,i,j);
+            switch(cnt){
+                case 3:
+                    cells[i][j] = true;
+                    break;
+                case 2:
+                    break;
+                default:
+                    cells[i][j] = false;
+                    break;
+            }
         }
     }
 }
