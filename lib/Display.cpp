@@ -11,9 +11,9 @@ void Display::printBoard(Board &board){
         for (bool i:row)
         {
             if (i)
-                cout<<"○ ";
+                cout<<"◉ ";
             else
-                cout<<"■ ";
+                cout<<"☐ ";
         }
         //cout<<"\n --------------------- "<<endl;
         cout<<endl;

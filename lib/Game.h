@@ -7,6 +7,8 @@
 
 
 #include "Display.h"
+#include <thread>
+#include <mutex>
 
 class Game
 {
@@ -14,6 +16,7 @@ public:
     Game(Board &b, Display &d, int delay);
     void play();
     void setDelay(int delay);
+    void getInput();
 
 private:
     Board b;
