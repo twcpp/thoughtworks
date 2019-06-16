@@ -3,18 +3,30 @@
 //
 
 #include "Game.h"
-#include <unistd.h>
 #include <cstdlib>
-#include <curses.h>
+#include <termios.h>  // for tcxxxattr, ECHO, etc ..
+#include <unistd.h>    // for STDIN_FILENO
+#include <cstring>
 
 
 std::mutex m;
 
+int getch (){
+    char ch;
+    struct termios oldt, newt;
+    tcgetattr(STDIN_FILENO, &oldt);
+    memcpy(&newt, &oldt, sizeof(newt));
+    newt.c_lflag &= ~( ECHO | ICANON | ECHOE | ECHOK | ECHONL | ECHOPRT | ECHOKE | ICRNL);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+    ch = getchar();
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+    return ch;
+}
 
 void Game::getInput(){
     char c;
     while(true){
-        cin.get(c);
+        c = getch();
         m.lock();
         if(c == '='){
             if(delay > 200){
@@ -42,6 +54,7 @@ void Game::setDelay(int delay)
 }
 void Game::play()
 {
+    system("clear");
     d.printBoard(b);
     while(true){
         m.lock();

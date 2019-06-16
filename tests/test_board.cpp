@@ -4,6 +4,7 @@
 #include <catch2/catch.hpp>
 #include "../lib/Board.h"
 #include <iostream>
+#include <time.h>
 
 TEST_CASE("should return empty board") {
     vector<pair<int, int>> empty;
@@ -77,19 +78,37 @@ TEST_CASE("should return board after 5 iteration") {
     REQUIRE(board->getBoard() == right_board);
 }
 
-TEST_CASE("should return display board") {
+TEST_CASE("should return same board") {
+    int h = 500, w = 500;
     vector<pair<int, int>> test1;
-    test1.push_back(pair<int,int>(0,0));
-    test1.push_back(pair<int,int>(0,3));
+    for (int i = 0; i < 100 * 100; i++)
+        test1.push_back(pair<int, int>(rand() % h, rand() % w));
 
-    vector<vector<char>> right_board = vector<vector<char>>(4,vector<char>(4, '■'));
-    right_board[0][0] = right_board[0][3] 
+    clock_t start, end; // typedef long clock_t
+    start = clock();
 
-    right_board[0][1] = right_board[0][2] = right_board[1][0] = right_board[1][3] = true;
-    right_board[2][1] = right_board[2][2] = true;
+    auto *right_board = new Board(h, w, test1);
+    for (int i = 0; i < 500; i++)
+        right_board->processBoard_naive();
 
-    REQUIRE(board->getBoard() == right_board);
+    end = clock();
+    double duration =(double)(end - start)/CLOCKS_PER_SEC;
+    cout<<"Total time: "<<duration<<" s"<<endl;
+
+    start = clock();
+
+    auto *board = new Board(h, w, test1);
+    for (int i = 0; i < 500; i++)
+        board->processBoard();
+
+    end = clock();
+    duration =(double)(end - start)/CLOCKS_PER_SEC;
+    cout<<"Total time: "<<duration<<" s"<<endl;
+
+    REQUIRE(board->getBoard() == right_board->getBoard());
 }
+
+
 
 
 

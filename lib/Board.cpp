@@ -1,12 +1,20 @@
 #include "Board.h"
 
+inline int Board::encodePos(int x, int y){
+    return x * w + y;
+}
+
 Board::Board(int h, int w, vector<pair<int, int>> &live_cell) {
     this->h = h;
     this->w = w;
     cells = vector<vector<bool>>(h,vector<bool>(w));
+    while (!que.empty())
+        que.pop();
     for (auto i : live_cell){
         cells[i.first][i.second] = true;
+        que.push(encodePos(i.first, i.second));
     }
+    iter = 0;
 }
 
 vector<vector<bool>> &Board::getBoard() {
@@ -30,6 +38,53 @@ int Board::countnNeighbor(vector<vector<bool>> &tmp, int x, int y){
 }
 
 void Board::processBoard() {
+    auto tmp = cells;
+    bool vis[h+5][w+5];
+    memset(vis, false, sizeof(vis));
+    int last_value = que.back();
+    while (!que.empty())
+    {
+        int head = que.front();
+        que.pop();
+        int x = head / w, y = head % w;
+        for (int ix = -1; ix <= 1; ix++)
+        {
+            for (int iy = -1; iy <= 1; iy++)
+            {
+                int tx = x + ix;
+                int ty = y + iy;
+                if (tx < 0 || tx >= h || ty < 0 || ty >= w)
+                    continue;
+                int cnt = countnNeighbor(tmp, tx, ty);
+                if (cnt == 3)
+                {
+                    cells[tx][ty] = true;
+                    if (!tmp[tx][ty] && !vis[tx][ty])
+                    {
+                        que.push(encodePos(tx, ty));
+                        vis[tx][ty] = true;
+                    }
+                    continue;
+                }
+                else if (cnt != 2 && tmp[tx][ty])
+                {
+                    cells[tx][ty] = false;
+                    if (!vis[tx][ty])
+                    {
+                        que.push(encodePos(tx, ty));
+                        vis[tx][ty] = true;
+                    }
+                }
+            }
+        }
+        if (head == last_value)   // already process all changed cells from last round
+            break;
+    }
+    iter++;
+}
+
+void Board::processBoard_naive()
+{
     auto tmp = cells;
     for(int i = 0; i < h; i++){
         for(int j = 0; j < w; j++){

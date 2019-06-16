@@ -23,7 +23,8 @@ int main() {
     test1.push_back(pair<int,int>(3,0));
 
     for (int i = 0; i < 50; i++)
-        test1.push_back(pair<int,int>(rand() % h, rand() % w));
+        test1.push_back(pair<int, int>(rand() % h, rand() % w));
+
 
     auto board = Board(h, w, test1);
     auto display = Display();
