@@ -3,35 +3,40 @@
 
 using namespace std;
 
-void f1(Game &g){
+void gamePlay(Game &g){  // main game play function
     g.play();
 }
 
-void f2(Game &g){
+void getSpeedInput(Game &g){  // function for listening user input
     g.getInput();
 }
 
-int main() {
-    int h, w;
-    cin>>h>>w;
+int main(int argc, char** argv) {
+    int h, w;                        // size of the board
+    ios::sync_with_stdio(false);
+    Board board;
+    if(argc == 3){                  // if user input h and w, randomly initialized live cells
+        h = atoi(argv[1]);
+        w = atoi(argv[2]);
+        vector<pair<int, int>> live_cell;
+        srand(time(NULL));          // seed for random generator
+        for (int i = 0; i < h * w / 10; i++)         // randomly initialized live cells
+            live_cell.push_back(pair<int, int>(rand() % h, rand() % w));
+        board = Board(h,w,live_cell);
 
-    vector<pair<int, int>> test1;
-    test1.push_back(pair<int,int>(0,0));
-    test1.push_back(pair<int,int>(0,3));
-    test1.push_back(pair<int,int>(1,2));
-    test1.push_back(pair<int,int>(2,2));
-    test1.push_back(pair<int,int>(3,0));
 
-    for (int i = 0; i < 50; i++)
-        test1.push_back(pair<int, int>(rand() % h, rand() % w));
+    }else if(argc == 2){            // if user input a filename, initialize cells with pre-defined list.
+        board = Board(argv[1]);
+    } else{
+        cout << "invalid arguments" << endl;
+        return -1;
+    }
 
-
-    auto board = Board(h, w, test1);
     auto display = Display();
     auto game = Game(board,display,1000);
-    thread t1 (ref(f1),ref(game));
-    thread t2 (ref(f2),ref(game));
-    t1.join();
-    t2.join();
+    thread t_game (ref(gamePlay),ref(game));          // main game play thread
+    thread t_listen (ref(getSpeedInput),ref(game));   // thread for listening user input
+    t_game.join();
+    t_listen.join();
     return 0;
 }

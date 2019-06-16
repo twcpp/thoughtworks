@@ -1,7 +1,3 @@
-//
-// Created by xxmen on 2019-06-15.
-//
-
 #include "Display.h"
 
 void Display::printBoard(Board &board){
@@ -10,14 +6,13 @@ void Display::printBoard(Board &board){
     {
         for (bool i:row)
         {
-            if (i)
+            if (i)                // live cell
                 //cout<<"◉ ";
                 cout<<"🌝 ";
-            else
+            else                  // dead cell
                 //cout<<"☐ ";
                 cout<<"🌚 ";
         }
-        //cout<<"\n --------------------- "<<endl;
         cout<<endl;
     }
     cout<<endl;

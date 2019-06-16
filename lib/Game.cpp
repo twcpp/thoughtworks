@@ -1,17 +1,14 @@
-//
-// Created by xxmen on 2019-06-15.
-//
-
 #include "Game.h"
 #include <cstdlib>
-#include <termios.h>  // for tcxxxattr, ECHO, etc ..
-#include <unistd.h>    // for STDIN_FILENO
+#include <termios.h>
+#include <unistd.h>
 #include <cstring>
+#include <iomanip>
 
 
-std::mutex m;
+std::mutex m;  // lock for delay
 
-int getch (){
+int getch (){  // read 1 char
     char ch;
     struct termios oldt, newt;
     tcgetattr(STDIN_FILENO, &oldt);
@@ -23,17 +20,23 @@ int getch (){
     return ch;
 }
 
-void Game::getInput(){
+void Game::getInput(){  // get user input for controlling speed
     char c;
     while(true){
         c = getch();
         m.lock();
-        if(c == '='){
+        if(c == '=' || c == '+'){  // increase speed
             if(delay > 200){
                 delay -= 200;
             }
-        }else if(c == '-'){
-            delay += 200;
+            else{
+                delay = 40;
+            }
+        }else if(c == '-'){        // decrease speed
+            if (delay < 200)
+                delay = 200;
+            else
+                delay += 200;
         }
         m.unlock();
     }
@@ -41,30 +44,32 @@ void Game::getInput(){
 }
 
 
-Game::Game(Board &b, Display &d, int delay)
+Game::Game(Board &b, Display &d, int delay) // init game
 {
     this->b = b;
     this->d = d;
     this->delay = delay;
 
 }
-void Game::setDelay(int delay)
-{
-    this->delay = delay;
-}
+
 void Game::play()
 {
-    system("clear");
+    system("clear");   // clear screen
+    cout << "Num of interation: " << b.getIter() << "    Display speed: " << setprecision(2) << 1000.0 / delay << endl;
     d.printBoard(b);
     while(true){
         m.lock();
         int st = 1000 * delay;
         m.unlock();
-        usleep(st);
-        cout << delay << endl;
-        b.processBoard();
+        usleep(st);    // for controlling speed
+        bool stable = b.processBoard();
         system("clear");
+        cout << "Num of interation: " << b.getIter() << "    Display speed: " << setprecision(2) << 1000.0 / delay << endl;
         d.printBoard(b);
-
+        if (stable)    // board becoming stable
+        {
+            cout << "Becoming stable after " << b.getIter() << " iterations." << endl;
+            break;
+        }
     }
 }

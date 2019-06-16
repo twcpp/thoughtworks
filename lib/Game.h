@@ -1,7 +1,3 @@
-//
-// Created by xxmen on 2019-06-15.
-//
-
 #ifndef TW_GAME_H
 #define TW_GAME_H
 
@@ -14,14 +10,13 @@ class Game
 {
 public:
     Game(Board &b, Display &d, int delay);
-    void play();
-    void setDelay(int delay);
-    void getInput();
+    void play();                            // main game function
+    void getInput();                        // get user input for controlling speed
 
 private:
     Board b;
     Display d;
-    int delay;  // in ms
+    int delay;  // delay in ms
 };
 
 

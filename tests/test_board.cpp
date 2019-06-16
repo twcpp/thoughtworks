@@ -78,17 +78,18 @@ TEST_CASE("should return board after 5 iteration") {
     REQUIRE(board->getBoard() == right_board);
 }
 
-TEST_CASE("should return same board") {
+TEST_CASE("should return same board and speed") {
     int h = 500, w = 500;
     vector<pair<int, int>> test1;
     for (int i = 0; i < 100 * 100; i++)
         test1.push_back(pair<int, int>(rand() % h, rand() % w));
 
+    int num_of_iter = 500;
     clock_t start, end; // typedef long clock_t
     start = clock();
 
     auto *right_board = new Board(h, w, test1);
-    for (int i = 0; i < 500; i++)
+    for (int i = 0; i < num_of_iter; i++)
         right_board->processBoard_naive();
 
     end = clock();
@@ -98,7 +99,7 @@ TEST_CASE("should return same board") {
     start = clock();
 
     auto *board = new Board(h, w, test1);
-    for (int i = 0; i < 500; i++)
+    for (int i = 0; i < num_of_iter; i++)
         board->processBoard();
 
     end = clock();
